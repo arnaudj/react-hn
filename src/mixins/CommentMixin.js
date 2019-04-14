@@ -37,7 +37,7 @@ var CommentMixin = {
 
   renderCommentLoading(comment) {
     return <div className={'Comment Comment--loading Comment--level' + this.props.level}>
-      {(this.props.loadingSpinner || comment.delayed) && <Spinner size="20"/>}
+      {(this.props.loadingSpinner || comment.delayed) && <Spinner size="20" />}
       {comment.delayed && <div className="Comment__text">
         Unable to load comment &ndash; this usually indicates the author has configured a delay.
         Trying again in 30 seconds.
@@ -96,7 +96,7 @@ var CommentMixin = {
       {options.collapsible && this.renderCollapseControl(options.collapsed)}
       {options.collapsible && ' '}
       <Link to={`/user/${comment.by}`} className="Comment__user">{comment.by}</Link>{' '}
-      <TimeAgo date={comment.time * 1000}/>
+      <TimeAgo date={comment.time * 1000} />
       {options.link && ' | '}
       {options.link && <Link to={`/comment/${comment.id}`}>link</Link>}
       {options.parent && ' | '}
@@ -112,8 +112,8 @@ var CommentMixin = {
   },
 
   renderCommentText(comment, options) {
-    return <div className="Comment__text">
-      {(!comment.dead || SettingsStore.showDead) ? <div dangerouslySetInnerHTML={{__html: comment.text}}/> : '[dead]'}
+    return <div className="Comment__text" onClick={this.toggleCollapse} >
+      {(!comment.dead || SettingsStore.showDead) ? <div dangerouslySetInnerHTML={{ __html: comment.text }} /> : '[dead]'}
       {SettingsStore.replyLinks && options.replyLink && !comment.dead && <p>
         <a href={`https://news.ycombinator.com/reply?id=${comment.id}`}>reply</a>
       </p>}
