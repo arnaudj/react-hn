@@ -1,4 +1,5 @@
-# [react-hn](https://insin.github.io/react-hn)
+# react-hn
+This is a fork of [react-hn](https://insin.github.io/react-hn), modified so it can be run from a CDN: server side rendering from origin is not included (requires a backend, and uses a 3rd party API)
 
 A [React](http://facebook.github.io/react) &
 [react-router](https://github.com/rackt/react-router)-powered implementation of
