@@ -104,10 +104,12 @@ var CommentMixin = {
       {options.op && ' | on: '}
       {options.op && <Link to={`/${this.state.op.type}/${this.state.op.id}`}>{this.state.op.title}</Link>}
       {comment.dead && ' | [dead]'}
-      {options.childCounts && ' | (' + options.childCounts.children + ' child' + pluralise(options.childCounts.children, ',ren')}
+      {options.childCounts && <span onClick={this.onCommentClick}>
+        {options.childCounts && ' | (' + options.childCounts.children + ' child' + pluralise(options.childCounts.children, ',ren')}
         {options.childCounts && options.childCounts.newComments > 0 && ', '}
         {options.childCounts && options.childCounts.newComments > 0 && <em>{options.childCounts.newComments} new</em>}
-      {options.childCounts && ')'}
+        {options.childCounts && ')'}
+      </span>}
     </div>
   },
 
