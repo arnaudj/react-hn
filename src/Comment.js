@@ -116,6 +116,16 @@ var Comment = React.createClass({
     }
   },
 
+  onCommentClick(e) {
+    if (e.target.tagName !== 'A') {
+      this.toggleCollapse(e)
+    }
+    else {
+      e.preventDefault()
+      window.open(e.target.href, '_blank')
+    }
+  },
+
   toggleCollapse(e) {
     e.preventDefault()
     this.props.threadStore.toggleCollapse(this.state.comment.id)

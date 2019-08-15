@@ -112,7 +112,7 @@ var CommentMixin = {
   },
 
   renderCommentText(comment, options) {
-    return <div className="Comment__text" onClick={this.toggleCollapse} >
+    return <div className="Comment__text" onClick={this.onCommentClick}>
       {(!comment.dead || SettingsStore.showDead) ? <div dangerouslySetInnerHTML={{ __html: comment.text }} /> : '[dead]'}
       {SettingsStore.replyLinks && options.replyLink && !comment.dead && <p>
         <a href={`https://news.ycombinator.com/reply?id=${comment.id}`}>reply</a>

@@ -2,3 +2,4 @@
 public/service-worker.js
 /node_modules
 /public/sw-toolbox.js
+dist/
