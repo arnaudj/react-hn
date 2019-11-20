@@ -37,32 +37,32 @@ var App = React.createClass({
 
   toggleSettings(e) {
     e.preventDefault()
-    this.setState({showSettings: !this.state.showSettings})
+    this.setState({ showSettings: !this.state.showSettings })
   },
 
   render() {
-    return <div className="App" onClick={this.state.showSettings && this.toggleSettings}>
-      <div className="App__wrap">
-      <div className="App__header">
-        <Link to="/news" className="App__homelinkicon"><img src="img/logo.png" width="16" height="16" alt="" /></Link>{' '}
-        <Link to="/news" activeClassName="active" className="App__homelink">React HN</Link>{' '}
-        <Link to="/newest" activeClassName="active">new</Link>{' | '}
-        <Link to="/newcomments" activeClassName="active">comments</Link> {' | '}
-        <Link to="/show" activeClassName="active">show</Link>{' | '}
-        <Link to="/ask" activeClassName="active">ask</Link>{' | '}
-        <Link to="/jobs" activeClassName="active">jobs</Link>
-        <a className="App__settings" tabIndex="0" onClick={this.toggleSettings} onKeyPress={this.toggleSettings}>
-          {this.state.showSettings ? 'hide settings' : 'settings'}
-        </a>
-        {this.state.showSettings && <Settings key="settings"/>}
-      </div>
-      <div className="App__content">
-        {this.props.children}
-      </div>
-      <div className="App__footer">
-        {`react-hn v${__VERSION__} | `}
-        <a href="https://github.com/insin/react-hn">insin/react-hn</a>
-      </div>
+    return <div className={SettingsStore.switchDarkTheme ? 'Dark__app__wrap App' : 'App'} onClick={this.state.showSettings && this.toggleSettings}>
+      <div className={SettingsStore.switchDarkTheme ? 'Dark__app__wrap App__wrap' : 'App__wrap'}>
+        <div className="App__header">
+          <Link to="/news" className="App__homelinkicon"><img src="img/logo.png" width="16" height="16" alt="" /></Link>{' '}
+          <Link to="/news" activeClassName="active" className="App__homelink">React HN</Link>{' '}
+          <Link to="/newest" activeClassName="active">new</Link>{' | '}
+          <Link to="/newcomments" activeClassName="active">comments</Link> {' | '}
+          <Link to="/show" activeClassName="active">show</Link>{' | '}
+          <Link to="/ask" activeClassName="active">ask</Link>{' | '}
+          <Link to="/jobs" activeClassName="active">jobs</Link>
+          <a className="App__settings" tabIndex="0" onClick={this.toggleSettings} onKeyPress={this.toggleSettings}>
+            {this.state.showSettings ? 'hide settings' : 'settings'}
+          </a>
+          {this.state.showSettings && <Settings key="settings" />}
+        </div>
+        <div className="App__content">
+          {this.props.children}
+        </div>
+        <div className="App__footer">
+          {`react-hn v${__VERSION__} | `}
+          <a href="https://github.com/insin/react-hn">insin/react-hn</a>
+        </div>
       </div>
     </div>
   }

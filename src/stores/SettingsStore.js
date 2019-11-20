@@ -8,6 +8,7 @@ var SettingsStore = {
   replyLinks: true,
   showDead: false,
   showDeleted: false,
+  switchDarkTheme: false,
   titleFontSize: 18,
   listSpacing: 16,
 
@@ -24,6 +25,7 @@ var SettingsStore = {
       replyLinks: this.replyLinks,
       showDead: this.showDead,
       showDeleted: this.showDeleted,
+      switchDarkTheme: this.switchDarkTheme,
       titleFontSize: this.titleFontSize,
       listSpacing: this.listSpacing
     }))
