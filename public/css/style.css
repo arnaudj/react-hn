@@ -258,8 +258,12 @@ span.control:hover {
 }
 .Comment {
 }
-.Comment--new > .Comment__content {
+ .Comment--new > :not(.Dark__app__wrap ) > .Comment__content {
   background-color: #ffffde;
+}
+
+.Dark__app__wrap  .Comment--new > .Comment__content {
+  background-color: #442;
 }
 /* Highlights a comment and its descendants on hover -- too distracting?
 .Comment:hover > .Comment__content {
