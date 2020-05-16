@@ -13,6 +13,7 @@ var ItemMixin = require('./mixins/ItemMixin')
 
 var cx = require('./utils/buildClassName')
 var setTitle = require('./utils/setTitle')
+var pluralise = require('./utils/pluralise')
 
 function timeUnitsAgo(value, unit, suffix) {
   if (value === 1) {
@@ -33,7 +34,7 @@ var Item = React.createClass({
   componentWillMount() {
     this.bindAsObject(HNService.itemRef(this.props.params.id), 'item')
     if (this.state.item.id) {
-      this.threadStore = new StoryCommentThreadStore(this.state.item, this.handleCommentsChanged, {cached: true})
+      this.threadStore = new StoryCommentThreadStore(this.state.item, this.handleCommentsChanged, { cached: true })
       setTitle(this.state.item.title)
     }
     window.addEventListener('beforeunload', this.handleBeforeUnload)
@@ -55,11 +56,11 @@ var Item = React.createClass({
       // ...and set it up again
       var item = ItemStore.getCachedStory(Number(nextProps.params.id))
       if (item) {
-        this.threadStore = new StoryCommentThreadStore(item, this.handleCommentsChanged, {cached: true})
+        this.threadStore = new StoryCommentThreadStore(item, this.handleCommentsChanged, { cached: true })
         setTitle(item.title)
       }
       this.bindAsObject(HNService.itemRef(nextProps.params.id), 'item')
-      this.setState({item: item || {}})
+      this.setState({ item: item || {} })
     }
   },
 
@@ -74,7 +75,7 @@ var Item = React.createClass({
     // If the state item id changed, an initial or new item must have loaded
     if (prevState.item.id !== this.state.item.id) {
       if (!this.threadStore || this.threadStore.itemId !== this.state.item.id) {
-        this.threadStore = new StoryCommentThreadStore(this.state.item, this.handleCommentsChanged, {cached: false})
+        this.threadStore = new StoryCommentThreadStore(this.state.item, this.handleCommentsChanged, { cached: false })
         setTitle(this.state.item.title)
         this.forceUpdate()
       }
@@ -123,16 +124,31 @@ var Item = React.createClass({
     this.forceUpdate()
   },
 
+  getButtonLabel() {
+    var showCommentsAfter = this.state.showNewCommentsAfter || this.threadStore.commentCount - 1
+    var howMany = this.threadStore.commentCount - showCommentsAfter
+    var timeComment = this.threadStore.getCommentByTimeIndex(showCommentsAfter + 1)
+    var text = `highlight ${howMany} comment${pluralise(howMany)} from `
+    return <span>
+      {text}<TimeAgo date={new Date(timeComment.time * 1000)} />
+    </span>
+  },
+
+  highlightRecentComments() {
+    var showCommentsAfter = this.state.showNewCommentsAfter || this.threadStore.commentCount - 1
+    this.threadStore.highlightNewCommentsSince(showCommentsAfter)
+  },
+
   render() {
     var state = this.state
     var item = state.item
     var threadStore = this.threadStore
-    if (!item.id || !threadStore) { return <div className="Item Item--loading"><Spinner size="20"/></div> }
-    return <div className={cx('Item', {'Item--dead': item.dead})}>
+    if (!item.id || !threadStore) { return <div className="Item Item--loading"><Spinner size="20" /></div> }
+    return <div className={cx('Item', { 'Item--dead': item.dead })}>
       <div className="Item__content">
         {this.renderItemTitle(item)}
         {this.renderItemMeta(item, (threadStore.lastVisit !== null && threadStore.newCommentCount > 0 && <span>{' '}
-          (<em>{threadStore.newCommentCount} new</em> in the last <TimeAgo date={threadStore.lastVisit} formatter={timeUnitsAgo}/>{') | '}
+          (<em>{threadStore.newCommentCount} new</em> in the last <TimeAgo date={threadStore.lastVisit} formatter={timeUnitsAgo} />{') | '}
           <span className="control" tabIndex="0" onClick={this.autoCollapse} onKeyPress={this.autoCollapse} title="Collapse threads without new comments">
             auto collapse
           </span>{' | '}
@@ -140,17 +156,33 @@ var Item = React.createClass({
             mark as read
           </span>
         </span>))}
+        {!threadStore.loading && threadStore.commentCount > 1 && <div style={{ marginTop: '1em' }}>
+          <input
+            max={threadStore.commentCount - 1}
+            min={1}
+            style={{ margin: 0, verticalAlign: 'middle' }}
+            type="range"
+            value={state.showNewCommentsAfter || threadStore.commentCount - 1}
+            onChange={(e) => {
+              var showNewCommentsAfter = Number(e.target.value)
+              this.setState({ showNewCommentsAfter })
+            }}
+          />
+          <button type="button" onClick={this.highlightRecentComments}>
+            {this.getButtonLabel()}
+          </button>
+        </div>}
         {item.text && <div className="Item__text">
-          <div dangerouslySetInnerHTML={{__html: item.text}}/>
+          <div dangerouslySetInnerHTML={{ __html: item.text }} />
         </div>}
         {item.type === 'poll' && <div className="Item__poll">
-          {item.parts.map(function(id) {
-            return <PollOption key={id} id={id}/>
+          {item.parts.map(function (id) {
+            return <PollOption key={id} id={id} />
           })}
         </div>}
       </div>
       {item.kids && <div className="Item__kids">
-        {item.kids.map(function(id, index) {
+        {item.kids.map(function (id, index) {
           return <Comment key={id} id={id} level={0}
             loadingSpinner={index === 0}
             threadStore={threadStore}
