@@ -12,6 +12,9 @@ var Settings = React.createClass({
     if (el.type === 'checkbox') {
       SettingsStore[el.name] = el.checked
     }
+    else if (el.type === 'radio') {
+      SettingsStore[el.name] = el.value
+    }
     else if (el.type === 'number' && el.value) {
       SettingsStore[el.name] = el.value
     }
@@ -23,49 +26,55 @@ var Settings = React.createClass({
     e.stopPropagation()
   },
 
+  checkStore(datastoreKey, value) {
+    return SettingsStore[datastoreKey] === value
+  },
+
   render() {
+    const RadioInput = ({ value, label, datastoreKey }) => <p><input type="radio" name={datastoreKey} value={value} id={`${datastoreKey}-${label}`} checked={this.checkStore(datastoreKey, value)} /> <label htmlFor={`${datastoreKey}-${label}`}>{label}</label></p>
+
     return <div ref="container" className="Settings" tabIndex="-1" onClick={this.onClick}>
       <form onChange={this.onChange}>
         <div className="Settings__setting Settings__setting--checkbox">
           <label htmlFor="autoCollapse">
-            <input type="checkbox" name="autoCollapse" id="autoCollapse" checked={SettingsStore.autoCollapse}/> auto collapse
+            <input type="checkbox" name="autoCollapse" id="autoCollapse" checked={SettingsStore.autoCollapse} /> auto collapse
           </label>
           <p>Automatically collapse comment threads without new comments on page load.</p>
         </div>
         <div className="Settings__setting Settings__setting--checkbox">
           <label htmlFor="replyLinks">
-            <input type="checkbox" name="replyLinks" id="replyLinks" checked={SettingsStore.replyLinks}/> show reply links
+            <input type="checkbox" name="replyLinks" id="replyLinks" checked={SettingsStore.replyLinks} /> show reply links
           </label>
           <p>Show "reply" links to Hacker News</p>
         </div>
         <div className="Settings__setting Settings__setting--checkbox">
           <label htmlFor="showDead">
-            <input type="checkbox" name="showDead" id="showDead" checked={SettingsStore.showDead}/> show dead
+            <input type="checkbox" name="showDead" id="showDead" checked={SettingsStore.showDead} /> show dead
           </label>
           <p>Show items flagged as dead.</p>
         </div>
         <div className="Settings__setting Settings__setting--checkbox">
           <label htmlFor="showDeleted">
-            <input type="checkbox" name="showDeleted" id="showDeleted" checked={SettingsStore.showDeleted}/> show deleted
+            <input type="checkbox" name="showDeleted" id="showDeleted" checked={SettingsStore.showDeleted} /> show deleted
           </label>
           <p>Show comments flagged as deleted in threads.</p>
         </div>
         <div className="Settings__setting Settings__setting--checkbox">
-          <label htmlFor="switchDarkTheme">
-            <input type="checkbox" name="switchDarkTheme" id="switchDarkTheme" checked={SettingsStore.switchDarkTheme}/> switch dark theme
-          </label>
-          <p>Switch to dark theme.</p>
+          <RadioInput value="auto" label="auto" datastoreKey="darkThemeMode" />
+          <RadioInput value="light" label="light" datastoreKey="darkThemeMode" />
+          <RadioInput value="dark" label="dark" datastoreKey="darkThemeMode" />
+          <p>Dark theme mode</p>
         </div>
         <div className="Settings__setting">
           <table>
             <tbody>
               <tr>
                 <td><label htmlFor="titleFontSize">title font size:</label></td>
-                <td><input type="number" min="13.333" step="1" name="titleFontSize" id="titleFontSize" value={SettingsStore.titleFontSize}/></td>
+                <td><input type="number" min="13.333" step="1" name="titleFontSize" id="titleFontSize" value={SettingsStore.titleFontSize} /></td>
               </tr>
               <tr>
                 <td><label htmlFor="listSpacing">list spacing:</label></td>
-                <td><input type="number" min="0" name="listSpacing" id="listSpacing" value={SettingsStore.listSpacing}/></td>
+                <td><input type="number" min="0" name="listSpacing" id="listSpacing" value={SettingsStore.listSpacing} /></td>
               </tr>
             </tbody>
           </table>

@@ -41,8 +41,10 @@ var App = React.createClass({
   },
 
   render() {
-    return <div className={SettingsStore.switchDarkTheme ? 'Dark__app__wrap App' : 'App'} onClick={this.state.showSettings && this.toggleSettings}>
-      <div className={SettingsStore.switchDarkTheme ? 'Dark__app__wrap App__wrap' : 'App__wrap'}>
+    const isMediaDarkMode = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
+    const enableDarkMode = SettingsStore.darkThemeMode === 'dark' || (SettingsStore.darkThemeMode === 'auto' && isMediaDarkMode)
+    return <div className={enableDarkMode ? 'Dark__app__wrap App' : 'App'} onClick={this.state.showSettings && this.toggleSettings}>
+      <div className={enableDarkMode ? 'Dark__app__wrap App__wrap' : 'App__wrap'}>
         <div className="App__header">
           <Link to="/news" className="App__homelinkicon"><img src="img/logo.png" width="16" height="16" alt="" /></Link>{' '}
           <Link to="/news" activeClassName="active" className="App__homelink">React HN</Link>{' '}
