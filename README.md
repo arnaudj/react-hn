@@ -8,10 +8,10 @@ A [React](http://facebook.github.io/react) &
 
 [![react-hn screenshot](https://github.com/insin/react-hn/raw/master/screenshot.png "New comment highlighting in react-hn")](https://insin.github.io/react-hn)
 
-Live version: http://insin.github.io/react-hn
 
 ## Features
 
+* Dark theme
 * Supports display of all item types:
   [stories](http://insin.github.io/react-hn/#/story/8863),
   [jobs](http://insin.github.io/react-hn/#/job/8426937),
